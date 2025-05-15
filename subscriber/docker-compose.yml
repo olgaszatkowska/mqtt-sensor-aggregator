@@ -1,0 +1,20 @@
+version: '3.8'
+services:
+  python_app:
+    build:
+      context: app
+      dockerfile: Dockerfile
+    container_name: python_app
+    depends_on:
+      - influxdb
+    privileged: true
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
+    environment:
+      DATA_PUBLISH_INTERVAL_SECONDS: ${DATA_PUBLISH_INTERVAL_SECONDS}
+    volumes:
+      - ./app:/app
+      - /sys/class/gpio:/sys/class/gpio
+
+volumes:
+  influxdb-data:
