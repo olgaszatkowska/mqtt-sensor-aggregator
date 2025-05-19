@@ -48,8 +48,8 @@ def main():
 
     collected_data: list[WeatherDataPoint] = []
 
-    last_collect_time = 0.0
-    last_publish_time = 0.0
+    last_collect_time = time.time()
+    last_publish_time = time.time()
 
     while True:
         now = time.time()
