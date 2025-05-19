@@ -3,7 +3,7 @@ from typing import Any, Dict
 import paho.mqtt.client as mqtt
 from influxdb_client import Point
 
-from broker.app.database.databse import DataBase
+from database.databse import DataBase
 from logging_config import setup_logging
 
 logging = setup_logging("mqtt_subscriber")
