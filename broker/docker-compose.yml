@@ -1,0 +1,47 @@
+version: '3.8'
+services:
+  influxdb:
+    build: influxdb
+    container_name: influxdb
+    ports:
+      - "8086:8086"
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+    environment:
+      DOCKER_INFLUXDB_URL: ${DOCKER_INFLUXDB_URL}
+      DOCKER_INFLUXDB_INIT_MODE: ${DOCKER_INFLUXDB_INIT_MODE}
+      DOCKER_INFLUXDB_INIT_USERNAME: ${DOCKER_INFLUXDB_INIT_USERNAME}
+      DOCKER_INFLUXDB_INIT_PASSWORD: ${DOCKER_INFLUXDB_INIT_PASSWORD}
+      DOCKER_INFLUXDB_INIT_ORG: ${DOCKER_INFLUXDB_INIT_ORG}
+      DOCKER_INFLUXDB_INIT_BUCKET: ${DOCKER_INFLUXDB_INIT_BUCKET}
+      DOCKER_INFLUXDB_INIT_BUCKET_RAW: ${DOCKER_INFLUXDB_INIT_BUCKET_RAW}
+      DOCKER_INFLUXDB_INIT_ADMIN_TOKEN: ${DOCKER_INFLUXDB_INIT_ADMIN_TOKEN}
+      DOCKER_INFLUXDB_HTTP_AUTH_ENABLE: ${DOCKER_INFLUXDB_HTTP_AUTH_ENABLE}
+  mosquitto:
+    image: eclipse-mosquitto:2
+    container_name: mosquitto-broker
+    ports:
+      - "1883:1883"     # MQTT
+      - "9001:9001"     # WebSocket (optional)
+    volumes:
+      - ./config:/mosquitto/config
+      - ./data:/mosquitto/data
+      - ./log:/mosquitto/log
+    restart: unless-stopped
+  broker_app:
+    build:
+      context: app
+      dockerfile: Dockerfile
+    container_name: broker_app
+    privileged: true
+    devices:
+      - /dev/gpiomem:/dev/gpiomem
+    environment:
+      MQTT_TOPIC: ${MQTT_TOPIC}
+      BROKER_ADDRESS: ${BROKER_ADDRESS}
+    volumes:
+      - ./app:/app
+      - /sys/class/gpio:/sys/class/gpio
+
+volumes:
+  influxdb-data:
