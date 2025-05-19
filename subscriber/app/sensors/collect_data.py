@@ -6,7 +6,7 @@ import board
 from datetime import datetime, timezone
 
 from logging_config import setup_logging
-from weather_data_point import WeatherDataPoint
+from sensors.weather_data_point import WeatherDataPoint
 
 logging = setup_logging("collect_data")
 
@@ -36,4 +36,4 @@ class CollectDataService:
         
         logging.info(f"Collected humidity: {float(average_humidity)} and temperature: {float(average_temperature)}")
 
-        return WeatherDataPoint(timestamp=current_time, avg_humidity= average_humidity, avg_temperature=average_temperature)
+        return WeatherDataPoint(timestamp=current_time, avg_humidity=average_humidity, avg_temperature=average_temperature)
