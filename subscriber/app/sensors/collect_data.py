@@ -13,8 +13,8 @@ logging = setup_logging("collect_data")
 
 class CollectDataService:
     def __init__(self) -> None:
-        self.DHT11_SENSOR_1 = adafruit_dht.DHT11(board.D23)
-        self.DHT11_SENSOR_2 = adafruit_dht.DHT11(board.D24)
+        self.DHT11_SENSOR_1 = adafruit_dht.DHT11(board.D5)
+        self.DHT11_SENSOR_2 = adafruit_dht.DHT11(board.D6)
 
     def collect(self) -> WeatherDataPoint:
         try:
